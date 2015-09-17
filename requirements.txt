@@ -1,0 +1,6 @@
+Flask==0.10.1
+Flask-SQLAlchemy==2.0
+google-api-python-client==1.4.2
+pytz==2015.4
+Flask-WTF==0.12
+marshmallow==1.2.6

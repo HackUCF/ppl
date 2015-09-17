@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1>ppl<br/>
+            <small>Hack@UCF Membership Lookup</small>
+        </h1>
+        
+        <p>I hope you're the on the executive board or have gotten permission
+            from someone that's on it.</p>
+
+        <p>If not, tell us how you got here. You may be eligible for some sweet
+            bug bounty type of swag.</p>
+
+        <form id="search" action="{{ url_for('search') }}" method="post">
+            <h3>Search</h3>
+            {{ form.hidden_tag() }}
+            <div class="row">
+                {{ form.knights_email.label }}
+                <input type="text" id="{{ form.knights_email.id }}" name="{{ form.knights_email.name }}" class="u-full-width" placeholder="member@knights.ucf.edu or partial"/>
+            </div>
+            <input type="reset"/>
+            <input class="button-primary" value="Search" type="submit"/>
+        </form>
+
+        <div id="results" style="display: none;">
+            <h3>Search Results</h3>
+        </div>
+        <table id="results-template" class="u-full-width" style="display: none">
+            <thead>
+                <tr></tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
