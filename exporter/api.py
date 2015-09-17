@@ -16,13 +16,7 @@ SCOPES = [
     'https://www.googleapis.com/auth/drive.readonly',
 ]
 
-if __name__ == '__main__':
-    import argparse
-
-    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-
-
-def _get_credentials(client_secret):
+def _get_credentials(flags, client_secret):
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
     if not os.path.exists(credential_dir):
@@ -40,12 +34,11 @@ def _get_credentials(client_secret):
     return credentials
 
 
-_credentials = _get_credentials(CLIENT_SECRET)
-_http = _credentials.authorize(httplib2.Http())
-service = discovery.build('drive', 'v2', http=_http)
+def download_membership_file(flags, filename='membership.csv'):
+    _credentials = _get_credentials(flags, CLIENT_SECRET)
+    _http = _credentials.authorize(httplib2.Http())
+    service = discovery.build('drive', 'v2', http=_http)
 
-
-def download_membership_file(filename='membership.csv'):
     results = service.files().list(q='title = "{}"'.format(TITLE)).execute()
     if len(results['items']) == 0:
         raise ValueError('File with title "{}" not found'.format(TITLE))

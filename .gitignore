@@ -1,6 +1,7 @@
 /client_secret.json
 /membership.csv
 member.db
+.htpasswd
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template

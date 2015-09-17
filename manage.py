@@ -12,7 +12,7 @@ def _update(args):
     update_membership(args.output_file)
 
 ACTION_MAP = {
-    'export': lambda args: api.download_membership_file(args.output_file),
+    'export': lambda args: api.download_membership_file(args, args.output_file),
     'update': _update,
     'syncdb': lambda args: syncdb()
 }
