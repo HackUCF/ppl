@@ -65,3 +65,4 @@ def update_membership(local_csv, timezone=tzoffset('EST', -1*5*60*60)):
         for _, m in members.items():
             db.session.add(m)
         db.session.commit()
+        return members.values()
