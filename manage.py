@@ -9,10 +9,14 @@ from web.models import syncdb, update_membership
 
 
 def _update(args):
+    print('[+] Exporting membership to {}...'.format(args.output_file))
     ACTION_MAP['export'](args)
+    print('[+] Updating membership database...')
     members = update_membership(args.output_file)
     if args.mailchimp_api_key:
-        email.sync_mailchimp(args.mailchimp_api_key, members)
+        print('[+] Updating Mailchimp list...')
+        added = email.sync_mailchimp(args.mailchimp_api_key, members)
+        print('[+] Added {} subscribers (need confirmation)'.format(len(added)))
 
 ACTION_MAP = {
     'export': lambda args: api.download_membership_file(args, args.output_file),
