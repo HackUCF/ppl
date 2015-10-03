@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,8 +8,8 @@
 
     <title>ppl - Hack@UCF</title>
     <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}"/>
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/skeleton.css' %}"/>
     {% block scripts %}{% endblock %}
 </head>
 <body>

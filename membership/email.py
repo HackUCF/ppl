@@ -1,5 +1,5 @@
 import mailchimp
-from web.models import Member
+from membership.models import Member
 
 
 def sync_mailchimp(api_key, members):

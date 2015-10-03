@@ -1,39 +1,27 @@
 import csv
-
-from dateutil.tz import tzoffset
-from dateutil.parser import parse as parse_datetime
-from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
-
 import json
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///member.db'
-db = SQLAlchemy(app)
+from dateutil.parser import parse as parse_datetime
+from dateutil.tz import tzoffset
+from django.db import models
 
 
-class Member(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime(timezone=True))
-    name = db.Column(db.String(255))
-    knights_email = db.Column(db.String(254), unique=True)
-    preferred_email = db.Column(db.String(254), unique=True)
-    paid_dues = db.Column(db.Boolean, default=True)
-    shirt_size = db.Column(db.String(3))
-    shirt_gender = db.Column(db.String(1))
-    json = db.Column(db.Text())
-
-
-
-def syncdb():
-    db.create_all()
+class Member(models.Model):
+    timestamp = models.DateTimeField()
+    name = models.CharField(max_length=255, blank=False)
+    knights_email = models.EmailField(unique=True, blank=False)
+    preferred_email = models.EmailField(unique=True, blank=False)
+    paid_dues = models.BooleanField(default=False)
+    shirt_size = models.CharField(max_length=3)
+    shirt_gender = models.CharField(max_length=1)
+    json = models.TextField()
 
 
 def determine_paid_dues(data):
     return data['Payment Method'] != '' and data['Paid Dues'] == 'Y'
 
 
-def update_membership(local_csv, timezone=tzoffset('EST', -1*5*60*60)):
+def update_membership(local_csv, timezone=tzoffset('EST', -1 * 5 * 60 * 60)):
     # email: Member()
     members = {}
     with open(local_csv, 'r', encoding='utf8') as csv_file:
@@ -42,7 +30,8 @@ def update_membership(local_csv, timezone=tzoffset('EST', -1*5*60*60)):
         for row in reader:
             data = dict(zip(headings, row))
             if '' in data: del data['']
-            timestamp = parse_datetime(data['Timestamp']).replace(tzinfo=timezone)
+            timestamp = parse_datetime(data['Timestamp']).replace(
+                tzinfo=timezone)
             name = '{} {}'.format(data['First Name'].capitalize(),
                                   data['Last Name'].capitalize())
             knights_email = data['UCF Student Email']
@@ -59,10 +48,4 @@ def update_membership(local_csv, timezone=tzoffset('EST', -1*5*60*60)):
                             paid_dues=paid_dues, json=jdata)
             members[knights_email] = member
 
-    if members:
-        Member.query.delete()
-        db.session.commit()
-        for _, m in members.items():
-            db.session.add(m)
-        db.session.commit()
-        return members.values()
+    return members.values()
