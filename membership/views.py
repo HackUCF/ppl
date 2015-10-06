@@ -1,4 +1,5 @@
 import json
+from django.core.serializers.json import DjangoJSONEncoder
 from django.forms import model_to_dict
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render
@@ -23,7 +24,9 @@ def search(request):
     knights_email = form.cleaned_data['knights_email']
     members = Member.objects.filter(knights_email__contains=knights_email)[:20]
     data = json.dumps({
-        'results': model_to_dict(m) for m in members
-    })
+        'results': {
+            'data': [model_to_dict(m) for m in members]
+        }
+    }, cls=DjangoJSONEncoder)
 
     return HttpResponse(data, content_type='application/json')
