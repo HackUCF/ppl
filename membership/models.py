@@ -41,11 +41,19 @@ def update_membership(local_csv, timezone=tzoffset('EST', -1 * 5 * 60 * 60)):
             jdata = json.dumps(data)
             paid_dues = determine_paid_dues(data)
 
-            member = Member(timestamp=timestamp, name=name,
-                            knights_email=knights_email,
-                            preferred_email=preferred_email,
-                            shirt_gender=shirt_gender, shirt_size=shirt_size,
-                            paid_dues=paid_dues, json=jdata)
+            member = Member.objects.get_or_create(
+                knights_email=knights_email,
+                preferred_email=preferred_email)
+            member.timestamp = timestamp
+            member.name = name
+            member.shirt_gender = shirt_gender
+            member.shirt_size = shirt_size
+            member.paid_dues = paid_dues
+            member.json = jdata
             members[knights_email] = member
+
+    # commit members
+    for member in members.values():
+        member.save()
 
     return members.values()
