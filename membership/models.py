@@ -22,7 +22,7 @@ def determine_paid_dues(data):
 
 
 def update_membership(local_csv, timezone=tzoffset('EST', -1 * 5 * 60 * 60)):
-    # email: Member()
+    # {email: Member()}
     members = {}
     with open(local_csv, 'r', encoding='utf8') as csv_file:
         reader = csv.reader(csv_file)
@@ -41,11 +41,25 @@ def update_membership(local_csv, timezone=tzoffset('EST', -1 * 5 * 60 * 60)):
             jdata = json.dumps(data)
             paid_dues = determine_paid_dues(data)
 
-            member = Member(timestamp=timestamp, name=name,
-                            knights_email=knights_email,
-                            preferred_email=preferred_email,
-                            shirt_gender=shirt_gender, shirt_size=shirt_size,
-                            paid_dues=paid_dues, json=jdata)
+            try:
+                member = Member.objects.get(knights_email=knights_email)
+                member.preferred_email = preferred_email
+                member.timestamp = timestamp
+                member.name = name
+                member.shirt_size = shirt_size
+                member.shirt_gender = shirt_gender
+                member.paid_dues = paid_dues
+                member.json = jdata
+            except Member.DoesNotExist:
+                member = Member(timestamp=timestamp, name=name,
+                                knights_email=knights_email,
+                                preferred_email=preferred_email,
+                                shirt_gender=shirt_gender,
+                                shirt_size=shirt_size,
+                                paid_dues=paid_dues, json=jdata)
             members[knights_email] = member
+
+    for member in members.values():
+        member.save()
 
     return members.values()
