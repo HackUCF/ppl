@@ -27,10 +27,13 @@ SECRET_KEY = ''.join(
     range(64))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-# ALLOWED_HOSTS = ['ppl.hackucf.org']
+ALLOWED_HOSTS = ['ppl.hackucf.org', '127.0.0.1']
 
+ADMINS = (
+    ('Mark Ignacio', 'mignacio@hackucf.org'),
+)
 
 # Application definition
 
@@ -105,3 +108,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '_static')
