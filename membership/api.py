@@ -35,9 +35,7 @@ def _get_credentials(flags, client_secret):
 
 
 def download_membership_file(flags, filename='membership.csv'):
-    _credentials = _get_credentials(flags, CLIENT_SECRET)
-    _http = _credentials.authorize(httplib2.Http())
-    service = discovery.build('drive', 'v2', http=_http)
+    service = build_service(flags)
 
     file = service.files().get(fileId=FILE_ID).execute()
     url = file['exportLinks']['text/csv']
@@ -45,3 +43,10 @@ def download_membership_file(flags, filename='membership.csv'):
     resp, content = service._http.request(url)
     open(filename, 'wb').write(content)
     return content
+
+
+def build_service(flags):
+    _credentials = _get_credentials(flags, CLIENT_SECRET)
+    _http = _credentials.authorize(httplib2.Http())
+    service = discovery.build('drive', 'v2', http=_http)
+    return service

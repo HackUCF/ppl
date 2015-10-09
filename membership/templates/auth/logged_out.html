@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block nav %}{% endblock %}
+{% block content %}
+  <div class="container">
+    <h1>ppl</h1>
+
+    <p>Thanks for spending time with the website today.</p>
+
+    <a href="{% url 'dashboard' %}">
+      <button class="button-primary">Go back home</button>
+    </a>
+  </div>
+{% endblock %}

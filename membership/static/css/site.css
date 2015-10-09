@@ -1,0 +1,31 @@
+nav {
+    margin-top: 1rem;
+    border-bottom: 1px solid #E1E1E1;
+}
+
+nav > ul {
+    list-style: none;
+    margin-bottom: 0;
+}
+
+nav > ul:after {
+    content: "";
+    display: table;
+    clear: both
+}
+
+nav li {
+    position: relative;
+    float: left;
+}
+
+nav li > a {
+    text-transform: uppercase;
+    margin-right: 35px;
+    text-decoration: none;
+    color: #222;
+}
+
+.center {
+    text-align: center;
+}

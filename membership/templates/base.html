@@ -2,20 +2,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <meta charset="UTF-8">
+  <meta name="description" content="Hack@UCF Membership Management">
 
-    <title>ppl - Hack@UCF</title>
-    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/skeleton.css' %}"/>
-    {% block scripts %}{% endblock %}
+  <title>ppl - Hack@UCF</title>
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600'
+        rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/skeleton.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  {% block scripts %}{% endblock %}
 </head>
 <body>
+{% block nav %}
+  <div class="container">
+    <nav>
+      <ul>
+        <li><a href="{% url 'dashboard' %}">home</a></li>
+        <li><a href="{% url 'logout' %}">logout</a></li>
+      </ul>
+    </nav>
+  </div>
+{% endblock nav %}
 {% block content %}{% endblock %}
-    <footer style="text-align: center">
-        on <a href="https://github.com/hackucf/ppl">github</a>
-    </footer>
+<footer style="text-align: center">
+  on <a href="https://github.com/hackucf/ppl">github</a>
+</footer>
 </body>
 </html>
