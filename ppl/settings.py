@@ -17,6 +17,7 @@ from django.conf import global_settings
 
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -30,7 +31,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
-    'membership'
+    'membership',
+    'resumes'
 )
 
 MIDDLEWARE_CLASSES = (
