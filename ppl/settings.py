@@ -47,6 +47,8 @@ AUTHENTICATION_BACKENDS = global_settings.AUTHENTICATION_BACKENDS + (
     'social.backends.google.GoogleOAuth2',
 )
 
+LOGIN_URL = '/login'
+
 ROOT_URLCONF = 'ppl.urls'
 
 TEMPLATES = [
@@ -89,11 +91,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # third party
-SOCIAL_AUTH_GOOGLE_WHITELISTED_DOMAINS = ('hackucf.org',)
+SOCIAL_AUTH_GOOGLE_WHITELISTED_DOMAINS = ['hackucf.org']
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = (
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/drive.readonly',
-)
+]
 
 try:
     from ppl.local_settings import *
