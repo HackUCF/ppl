@@ -18,6 +18,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^$', 'membership.views.dashboard', name='dashboard'),
     url(r'^search$', 'membership.views.search', name='search')
 ]

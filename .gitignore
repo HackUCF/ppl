@@ -1,6 +1,7 @@
 /client_secret.json
 /membership.csv
 db.sqlite3
+/ppl/local_settings.py
 .htpasswd
 
 # Created by .ignore support plugin (hsz.mobi)
