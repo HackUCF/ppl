@@ -10,7 +10,7 @@ from oauth2client import client
 from oauth2client import tools
 
 APPLICATION_NAME = 'Hack@UCF Membership Updater v1'
-TITLE = 'Hack@UCF Membership - 2015 (Responses)'
+FILE_ID = '1Cj8HQ8fKarE_6L2dDmG6ilva5ziyF_rSx8YBqm8BKUI'
 CLIENT_SECRET = 'client_secret.json'
 SCOPES = [
     'https://www.googleapis.com/auth/drive.readonly',
@@ -39,11 +39,7 @@ def download_membership_file(flags, filename='membership.csv'):
     _http = _credentials.authorize(httplib2.Http())
     service = discovery.build('drive', 'v2', http=_http)
 
-    results = service.files().list(q='title = "{}"'.format(TITLE)).execute()
-    if len(results['items']) == 0:
-        raise ValueError('File with title "{}" not found'.format(TITLE))
-
-    file = results['items'][0]
+    file = service.files().get(fileId=FILE_ID).execute()
     url = file['exportLinks']['text/csv']
     logging.info('URL: {}'.format(url))
     resp, content = service._http.request(url)
