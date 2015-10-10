@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^logout$', 'django.contrib.auth.views.logout',
         {'template_name': 'auth/logged_out.html'}, name='logout'),
     url(r'^$', 'membership.views.dashboard', name='dashboard'),
-    url(r'^search$', 'membership.views.search', name='search')
+    url(r'^search$', 'membership.views.search', name='search'),
+    url(r'^resumes/', include('resumes.urls', namespace='resumes'))
 ]

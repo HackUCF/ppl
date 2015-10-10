@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/classic.css' %}">
+  <link rel="stylesheet" href="{% static 'css/classic.date.css' %}">
+  <link rel="stylesheet" href="{% static 'css/resumes.css' %}">
+{% endblock %}
+{% block scripts %}
+  <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+  <script src="{% static 'js/picker.js' %}"></script>
+  <script src="{% static 'js/picker.date.js' %}"></script>
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <h1>ppl</h1>
+
+    <h3>Resume/CV Archive</h3>
+
+    <p>This is a list of Hack@UCF members who have opted to share with one of
+      three different categories:</p>
+    <ul>
+      <li>Team/Club sponsors</li>
+      <li>Guest speakers</li>
+      <li>At club executives' discretion</li>
+    </ul>
+
+    <p>If you have any questions about this website, please feel free to email
+      <a href="mailto:ops@hackucf.org">ops@hackucf.org</a>!</p>
+
+    <div class="center">
+      <h4>Search Options</h4>
+    </div>
+    <form action="" id="search-form" method="get">
+      <div class="row">
+        {{ form.graduation.errors }}
+        <label for="{{ form.graduation.id_for_label }}">{{ form.graduation.label }}</label>
+        {{ form.graduation }}
+      </div>
+      <div class="row">
+        {{ form.submitted_by.errors }}
+        <label for="{{ form.submitted_by.id_for_label }}">{{ form.submitted_by.label }}</label>
+        <input type="text" name="{{ form.submitted_by.name }}" id="{{ form.submitted_by.id_for_label }}" class="u-full-width" value="{% if form.submitted_by.value %}{{ form.submitted_by.value }}{% endif %}">
+        <script>
+          $('#{{ form.submitted_by.id_for_label }}').pickadate({
+            format: 'yyyy-mm-dd'
+          });
+        </script>
+      </div>
+      <input class="button" type="reset">
+      <input class="button-primary" type="submit" value="Search">
+    </form>
+
+    <h4>Results</h4>
+    <a href="{% url 'resumes:as_csv' %}?{{ request.META.QUERY_STRING }}" class="button button-primary">Export as CSV</a>
+    <table id="results" class="u-full-width">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Graduation</th>
+        <th>Submitted on</th>
+        <th>Link</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for resume in resumes %}
+        <tr>
+          <td>{{ resume.member.name }}</td>
+          <td>{{ resume.get_graduation_display }}</td>
+          <td>{{ resume.timestamp }}</td>
+          <td>
+            <a href="{{ resume.url }}">{{ resume.url|truncatechars:40 }}</a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

@@ -1,0 +1,12 @@
+#id_graduation {
+    list-style: none;
+}
+
+#id_graduation > li {
+    display: inline-block;
+    margin-right: 4rem;
+}
+
+#id_graduation > li > label {
+    margin: 0;
+}
