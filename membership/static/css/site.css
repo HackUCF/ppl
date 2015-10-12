@@ -29,3 +29,27 @@ nav li > a {
 .center {
     text-align: center;
 }
+
+.button.button-index {
+    height: auto;
+    display: block;
+    overflow: hidden;
+}
+
+.button-index > img {
+    max-height: 200px;
+    margin: 1rem auto auto;
+}
+
+.button-index > a {
+    font-size: 16px;
+}
+
+.button-index > * {
+    display: block;
+}
+
+.button-index:hover,
+.button-index:active {
+    background: #eee;
+}

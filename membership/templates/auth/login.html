@@ -5,27 +5,34 @@
   <div class="container">
     <h1>ppl</h1>
     <h2>Login</h2>
-    <p>Hack@UCF executives and ops: You want to use this one.</p>
-    <div style="text-align: center">
-      <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}">
-        <img src="{% static 'google_signin_buttons/1x/btn_google_signin_dark_normal_web.png' %}" alt="Google OAuth2">
-      </a>
+    <div class="row">
+      <div class="six columns">
+        <h3>OAuth Login</h3>
+        <p>Hack@UCF executives and operations: Use this.</p>
+        <div class="center">
+          <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}">
+            <img src="{% static 'google_signin_buttons/1x/btn_google_signin_dark_normal_web.png' %}" alt="Google OAuth2">
+          </a>
+        </div>
+      </div>
+      <div class="six columns">
+        <h3>Local Login</h3>
+        <p>Sponsors: please enter your provided credentials unless told to use OAuth.</p>
+        <form id="local-login" action="" method="post">
+          {% csrf_token %}
+          <div class="row">
+            {{ form.username.label }}
+            <input type="text" id="{{ form.username.id }}" name="{{ form.username.name }}" class="u-full-width">
+          </div>
+
+          <div class="row">
+            {{ form.password.label }}
+            <input type="password" id="{{ form.password.id }}" name="{{ form.password.name }}" class="u-full-width">
+          </div>
+          <input class="button-primary" type="submit">
+        </form>
+      </div>
     </div>
 
-    <h3>Local Login</h3>
-    <p>This is a backup.</p>
-    <form id="local-login" action="" method="post">
-      {% csrf_token %}
-      <div class="row">
-        {{ form.username.label }}
-        <input type="text" id="{{ form.username.id }}" name="{{ form.username.name }}" class="u-full-width">
-      </div>
-
-      <div class="row">
-        {{ form.password.label }}
-        <input type="password" id="{{ form.password.id }}" name="{{ form.password.name }}" class="u-full-width">
-      </div>
-      <input class="button-primary" type="submit">
-    </form>
   </div>
 {% endblock %}

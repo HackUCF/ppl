@@ -1,41 +1,30 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load static from staticfiles %}
 {% block scripts %}
-    <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
-    <script src="{% static 'js/search.js' %}"></script>
+  <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+  <script src="{% static 'js/index.js' %}"></script>
+  <script>
+
+  </script>
 {% endblock %}
+
+{% block nav %}{% endblock %}
 {% block content %}
-    <div class="container">
-        <h1>ppl<br/>
-            <small>Hack@UCF Membership Lookup</small>
-        </h1>
-        
-        <p>I hope you're the on the executive board or have gotten permission
-            from someone that's on it.</p>
+  <div class="container">
+    <h1>ppl</h1>
 
-        <p>If not, tell us how you got here. You may be eligible for some sweet
-            bug bounty type of swag.</p>
-
-        <form id="search" action="{% url 'search' %}" method="post">
-            <h3>Search</h3>
-            {% csrf_token %}
-            <div class="row">
-                {{ form.knights_email.label }}
-                <input type="text" id="{{ form.knights_email.id }}" name="{{ form.knights_email.name }}" class="u-full-width" placeholder="member@knights.ucf.edu or partial"/>
-            </div>
-            <input type="reset"/>
-            <input class="button-primary" value="Search" type="submit"/>
-        </form>
-
-        <div id="results" style="display: none;">
-            <h3>Search Results</h3>
-        </div>
-        <table id="results-template" class="u-full-width" style="display: none">
-            <thead>
-                <tr></tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+    <p>Hack@UCF membership and sponsor benefit portal. </p>
+    <div class="row">
+      <div class="six columns button button-index">
+        {# icon by Catia Marsh Mallow #}
+        <img src="{% static 'images/grad-cap.svg' %}" alt="graduation cap" class="u-full-width"/>
+        <a href="{% url 'membership:dashboard' %}">Membership Lookup</a>
+      </div>
+      <div class="six columns button button-index">
+          {# icon by Catia Marsh Mallow #}
+          <img src="{% static 'images/suitcase.svg' %}" alt="suitcase" class="u-full-width"/>
+        <a href="{% url 'membership:dashboard' %}">Resume/CV Archive</a>
+      </div>
     </div>
+  </div>
 {% endblock %}
