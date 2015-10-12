@@ -24,7 +24,7 @@ def _can_view_resumes(user):
         return True
 
     grouped = Group.objects.filter(
-        share_group__isNull=False) & user.groups.all()
+        share_group__isnull=False) & user.groups.all()
     return grouped.exists()
 
 
