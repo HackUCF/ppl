@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
-
+from datetime import datetime, timedelta
 import logging
 import os
 
+from django.conf import settings
+from django.core.cache import cache
+import googleapiclient.errors
 import httplib2
 from apiclient import discovery
 import oauth2client
 from oauth2client import client
 from oauth2client import tools
+from oauth2client.client import OAuth2Credentials
+from oauth2client import GOOGLE_REVOKE_URI, GOOGLE_TOKEN_URI
+from social.apps.django_app.default.models import UserSocialAuth
 
 APPLICATION_NAME = 'Hack@UCF Membership Updater v1'
 FILE_ID = '1Cj8HQ8fKarE_6L2dDmG6ilva5ziyF_rSx8YBqm8BKUI'
@@ -15,6 +21,9 @@ CLIENT_SECRET = 'client_secret.json'
 SCOPES = [
     'https://www.googleapis.com/auth/drive.readonly',
 ]
+
+DOWNLOADABLE_CACHE_KEY = 'can_download_{}'.format(FILE_ID)
+
 
 def _get_credentials(flags, client_secret):
     home_dir = os.path.expanduser('~')
@@ -50,3 +59,56 @@ def build_service(flags):
     _http = _credentials.authorize(httplib2.Http())
     service = discovery.build('drive', 'v2', http=_http)
     return service
+
+
+def build_service_from_credentials(credentials):
+    http = credentials.authorize(httplib2.Http())
+    return discovery.build('drive', 'v2', http=http)
+
+
+def user_can_download_sheet(user):
+    if cache.get(DOWNLOADABLE_CACHE_KEY, False):
+        return True
+
+    if download_sheet_with_user(user):
+        cache.set(DOWNLOADABLE_CACHE_KEY, True, 300)
+        return True
+
+    return False
+
+
+def download_sheet_with_user(user, filename='membership.csv'):
+    """
+    Download the membership with a user's credentials
+
+    :type user: users.models.User
+    :param user:
+    :return: boolean of successful download
+    """
+    try:
+        social = UserSocialAuth.get_social_auth_for_user(user).get()
+    except UserSocialAuth.DoesNotExist:
+        return False
+
+    extra = social.extra_data
+    expiry = datetime.utcnow() + timedelta(seconds=int(extra['expires']))
+    credentials = OAuth2Credentials(
+        extra['access_token'],
+        settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY,
+        settings.SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET,
+        extra['refresh_token'],
+        expiry,
+        GOOGLE_TOKEN_URI,
+        None,
+        revoke_uri=GOOGLE_REVOKE_URI
+    )
+    service = build_service_from_credentials(credentials)
+    try:
+        file = service.files().get(fileId=FILE_ID).execute()
+    except googleapiclient.errors.HttpError:
+        return False
+
+    url = file['exportLinks']['text/csv']
+    resp, content = service._http.request(url)
+    open(filename, 'wb').write(content)
+    return True
