@@ -53,3 +53,13 @@ nav li > a {
 .button-index:active {
     background: #eee;
 }
+
+#forbidden {
+    border-bottom: 1px solid #E1E1E1;
+    margin-bottom: 1.5rem;
+}
+
+.forbidden-reason {
+    color: #d00;
+    font-weight: bold;
+}

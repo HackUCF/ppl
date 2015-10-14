@@ -4,10 +4,22 @@
 {% block content %}
   <div class="container">
     <h1>ppl</h1>
-    <h2>Login</h2>
+    {% with reason=request.GET.reason %}
+      {% if reason %}
+        <div class="row" id="forbidden">
+          <h3 class="forbidden-reason">Access Denied</h3>
+          {% if reason == 'no_member_view_permission' %}
+            <p>You do not have permission to view the Hack@UCF member database. Both a Google account and permission to view the source Google Sheet with that account are required.</p>
+          {% elif reason == 'no_resume_view_permission' %}
+            <p>You do not have permission to view the resume/CV database. If this should not be the case, please email
+              <a href="mailto:ops@hackucf.org">ops@hackucf.org</a> for help!</p>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endwith %}
     <div class="row">
       <div class="six columns">
-        <h3>OAuth Login</h3>
+        <h3>Google Login</h3>
         <p>Hack@UCF executives and operations: Use this.</p>
         <div class="center">
           <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}">
@@ -17,7 +29,7 @@
       </div>
       <div class="six columns">
         <h3>Local Login</h3>
-        <p>Sponsors: please enter your provided credentials unless told to use OAuth.</p>
+        <p>Sponsors: please enter your provided credentials unless you are sure have OAuth credentials to this website.</p>
         <form id="local-login" action="" method="post">
           {% csrf_token %}
           <div class="row">

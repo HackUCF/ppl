@@ -2,8 +2,8 @@ import csv
 import io
 from datetime import datetime
 
+from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test, login_required
-
 from django.contrib.auth.models import Group
 
 from django.http import HttpResponse, HttpResponseBadRequest
@@ -28,8 +28,14 @@ def _can_view_resumes(user):
     return grouped.exists()
 
 
+can_view_resumes = user_passes_test(
+    _can_view_resumes,
+    login_url=settings.LOGIN_URL + '?reason=no_resume_view_permission'
+)
+
+
 @login_required
-@user_passes_test(_can_view_resumes)
+@can_view_resumes
 def view_resumes(request):
     # only sponsors, guests, and club execs may view
     form, resumes = _search(request)
@@ -41,7 +47,7 @@ def view_resumes(request):
 
 
 @login_required
-@user_passes_test(_can_view_resumes)
+@can_view_resumes
 def export_csv(request):
     form, resumes = _search(request)
     if not form.is_valid():
