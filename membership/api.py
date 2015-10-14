@@ -67,11 +67,12 @@ def build_service_from_credentials(credentials):
 
 
 def user_can_download_sheet(user):
-    if cache.get(DOWNLOADABLE_CACHE_KEY, False):
+    cache_key = '{}_{}'.format(user.email, DOWNLOADABLE_CACHE_KEY)
+    if cache.get(cache_key, False):
         return True
 
     if download_sheet_with_user(user):
-        cache.set(DOWNLOADABLE_CACHE_KEY, True, 300)
+        cache.set(cache_key, True, 300)
         return True
 
     return False

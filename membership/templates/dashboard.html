@@ -30,6 +30,12 @@
     <div id="results" style="display: none;">
       <h3>Search Results</h3>
     </div>
+
+    <form action="{% url 'membership:update' %}" id="update-members" method="post" class="center">
+      {% csrf_token %}
+      <p>Results out of date?</p>
+      <input class="button" type="submit" value="Update member list" {% if not enable_member_update %}disabled{% endif %}>
+    </form>
     <table id="results-template" class="u-full-width" style="display: none">
       <thead>
       <tr></tr>

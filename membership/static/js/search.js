@@ -1,5 +1,6 @@
 'use strict';
 $(function () {
+  //search
   var $results = $('#results');
   var $resultsTemplate = $('#results-template');
 
@@ -61,6 +62,23 @@ $(function () {
 
       $results.find('table').remove();
       $results.append($newResults).show();
+    });
+  });
+
+  // update members
+  var updating = false;
+  $('#update-members').submit(function (e) {
+    var $this = $(this);
+    e.preventDefault();
+    if (updating) return;
+    updating = true;
+
+    // AJAX call
+    $.post(this.action, $this.serialize()).done(function() {
+      location.reload();
+    }).fail(function() {
+      updating = false;
+      $this.find('input[type=submit]').prop('disabled', true);
     });
   });
 });
