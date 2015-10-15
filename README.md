@@ -1,5 +1,5 @@
 # ppl
-Google Sheets-backed membership lookups with Flask, Skeleton, and Django.
+Google Sheets-backed membership lookups with Skeleton, [python-social-auth](http://psa.matiasaguirre.net/), and Django.
 
 ![Screenshot](https://raw.githubusercontent.com/HackUCF/ppl/gh-pages/screenshot.png)
 

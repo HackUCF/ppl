@@ -1,5 +1,6 @@
 /client_secret.json
 /membership.csv
+/resumes.csv
 db.sqlite3
 /ppl/local_settings.py
 .htpasswd
