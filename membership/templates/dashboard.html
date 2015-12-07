@@ -20,8 +20,8 @@
       <h3>Search</h3>
       {% csrf_token %}
       <div class="row">
-        {{ form.knights_email.label }}
-        <input type="text" id="{{ form.knights_email.id }}" name="{{ form.knights_email.name }}" class="u-full-width" placeholder="member@knights.ucf.edu or partial"/>
+        {{ form.query.label }}
+        <input type="text" id="{{ form.query.id }}" name="{{ form.query.name }}" class="u-full-width" placeholder="search for email or name"/>
       </div>
       <input type="reset"/>
       <input class="button-primary" value="Search" type="submit"/>
