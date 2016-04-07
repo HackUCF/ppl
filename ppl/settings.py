@@ -48,9 +48,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-AUTHENTICATION_BACKENDS = global_settings.AUTHENTICATION_BACKENDS + (
+AUTHENTICATION_BACKENDS = global_settings.AUTHENTICATION_BACKENDS + [
     'social.backends.google.GoogleOAuth2',
-)
+]
 
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
