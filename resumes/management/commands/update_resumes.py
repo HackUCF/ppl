@@ -1,16 +1,14 @@
 import csv
 
+from dateutil.parser import parse as parse_datetime
+from dateutil.tz import tzoffset
+from django.conf import settings
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
-from dateutil.parser import parse as parse_datetime
-
-from dateutil.tz import tzoffset
 
 from membership import api
 from membership.models import Member
 from resumes.models import Resume, ResumeShares
-
-FILE_ID = '13wOLalcADsOklo6klNC5lpVvGhDnqdtHJLzrV6o9gMQ'
 
 
 class Command(BaseCommand):
@@ -36,7 +34,7 @@ class Command(BaseCommand):
     @staticmethod
     def download_resumes(options, output_file):
         service = api.build_service(options)
-        file = service.files().get(fileId=FILE_ID).execute()
+        file = service.files().get(fileId=settings.GOOGLE_RESUME_RESPONSES_FILE_ID).execute()
         url = file['exportLinks']['text/csv']
         resp, content = service._http.request(url)
         open(output_file, 'wb').write(content)

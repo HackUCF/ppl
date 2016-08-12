@@ -1,28 +1,25 @@
 #!/usr/bin/env python3
-from datetime import datetime, timedelta
 import logging
 import os
+from datetime import datetime, timedelta
 
-from django.conf import settings
-from django.core.cache import cache
 import googleapiclient.errors
 import httplib2
-from apiclient import discovery
 import oauth2client
+from apiclient import discovery
+from django.conf import settings
+from django.core.cache import cache
+from oauth2client import GOOGLE_REVOKE_URI, GOOGLE_TOKEN_URI
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.client import OAuth2Credentials
-from oauth2client import GOOGLE_REVOKE_URI, GOOGLE_TOKEN_URI
 from social.apps.django_app.default.models import UserSocialAuth
 
-APPLICATION_NAME = 'Hack@UCF Membership Updater v1'
-FILE_ID = '1Cj8HQ8fKarE_6L2dDmG6ilva5ziyF_rSx8YBqm8BKUI'
-CLIENT_SECRET = 'client_secret.json'
 SCOPES = [
     'https://www.googleapis.com/auth/drive.readonly',
 ]
 
-DOWNLOADABLE_CACHE_KEY = 'can_download_{}'.format(FILE_ID)
+DOWNLOADABLE_CACHE_KEY = 'can_download_{}'.format(settings.GOOGLE_MEMBERSHIP_FILE_ID)
 
 
 def _get_credentials(flags, client_secret):
@@ -37,7 +34,7 @@ def _get_credentials(flags, client_secret):
     credentials = store.get()
     if not credentials or credentials.invalid:
         flow = client.flow_from_clientsecrets(client_secret, SCOPES)
-        flow.user_agent = APPLICATION_NAME
+        flow.user_agent = settings.GOOGLE_APPLICATION_NAME
         credentials = tools.run_flow(flow, store, flags)
         print('Storing credentials to', credential_path)
     return credentials
@@ -46,7 +43,7 @@ def _get_credentials(flags, client_secret):
 def download_membership_file(flags, filename='membership.csv'):
     service = build_service(flags)
 
-    file = service.files().get(fileId=FILE_ID).execute()
+    file = service.files().get(fileId=settings.GOOGLE_MEMBERSHIP_FILE_ID).execute()
     url = file['exportLinks']['text/csv']
     logging.info('URL: {}'.format(url))
     resp, content = service._http.request(url)
@@ -55,7 +52,7 @@ def download_membership_file(flags, filename='membership.csv'):
 
 
 def build_service(flags):
-    _credentials = _get_credentials(flags, CLIENT_SECRET)
+    _credentials = _get_credentials(flags, settings.GOOGLE_CLIENT_SECRET_FILE)
     _http = _credentials.authorize(httplib2.Http())
     service = discovery.build('drive', 'v2', http=_http)
     return service
@@ -105,7 +102,7 @@ def download_sheet_with_user(user, filename='membership.csv'):
     )
     service = build_service_from_credentials(credentials)
     try:
-        file = service.files().get(fileId=FILE_ID).execute()
+        file = service.files().get(fileId=settings.GOOGLE_MEMBERSHIP_FILE_ID).execute()
     except googleapiclient.errors.HttpError:
         return False
 
