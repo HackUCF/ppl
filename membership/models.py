@@ -30,6 +30,9 @@ def update_membership(local_csv, timezone=tzoffset('EST', -1 * 5 * 60 * 60)):
         for row in reader:
             data = dict(zip(headings, row))
             if '' in data: del data['']
+            # probably an empty row
+            if not data['Timestamp']:
+                continue
             timestamp = parse_datetime(data['Timestamp']).replace(
                 tzinfo=timezone)
             name = '{} {}'.format(data['First Name'].capitalize(),
