@@ -32,7 +32,7 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 # Google settings
-GOOGLE_APPLICATION_NAME = 'Hack@UCF Membership Updater v1'
+GOOGLE_APPLICATION_NAME = 'Hack@UCF Membership Updater v0.9'
 GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR, 'client_secret.json')  # change at your own risk
 GOOGLE_MEMBERSHIP_FILE_ID = '1Cj8HQ8fKarE_6L2dDmG6ilva5ziyF_rSx8YBqm8BKUI'
 GOOGLE_RESUME_RESPONSES_FILE_ID = '13wOLalcADsOklo6klNC5lpVvGhDnqdtHJLzrV6o9gMQ'
