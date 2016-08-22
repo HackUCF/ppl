@@ -3,4 +3,4 @@ Google Sheets-backed membership lookups with Skeleton, [python-social-auth](http
 
 ![Screenshot](https://raw.githubusercontent.com/HackUCF/ppl/gh-pages/screenshot.png)
 
-See the wiki page on [Installation and Configuration](https://github.com/HackUCF/ppl.docker/wiki#installation) for help deploying this webapp.
+See the [wiki](https://github.com/HackUCF/ppl/wiki) for help deploying this webapp.
